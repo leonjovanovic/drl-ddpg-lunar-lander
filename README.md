@@ -22,12 +22,12 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;Action is two real values vector from -1 to +1. First controls main engine, -1..0 off, 0..+1 throttle from 50% to 100% power. Engine can't work with less than 50% power. Second value -1.0..-0.5 fire left engine, +0.5..+1.0 fire right engine, -0.5..0.5 off.
 
-&nbsp;&nbsp;&nbsp;&nbsp;The episode ends when the lander **lands on the terrain**. Goal is reached when algorithm achieves ***mean score of 200 or higher on last 100 episodes (games)***.
+&nbsp;&nbsp;&nbsp;&nbsp;The episode ends when the lander **lands on the terrain** or **crashes**. Goal is reached when algorithm achieves ***mean score of 200 or higher on last 100 episodes (games)***.
 
 ## Deep Deterministic Policy Gradient
-&nbsp;&nbsp;&nbsp;&nbsp;Deep Deterministic Policy Gradient represents mixture of DQN and Actor-Critic algorithms. Since DQN doesn't work with stochastic policy, it couldn't be applied to the enviroments with continuous actions. Therefore DDPG was introduced, with hybrid deterministic policy. Instead of having stochastic policy which generates probability distribution from which we sample actions, we will create deterministic policy. 
+&nbsp;&nbsp;&nbsp;&nbsp;Deep Deterministic Policy Gradient represents mixture of [DQN](https://arxiv.org/pdf/1312.5602.pdf) and [Actor-Critic algorithms](https://proceedings.neurips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf). Since DQN doesn't work with [stochastic policy](https://ai.stackexchange.com/questions/12274/what-is-the-difference-between-a-stochastic-and-a-deterministic-policy), it couldn't be applied to the enviroments with continuous actions. Therefore DDPG was introduced, with hybrid deterministic policy. Instead of having stochastic policy which generates probability distribution from which we sample actions, we will create [deterministic policy](https://ai.stackexchange.com/questions/12274/what-is-the-difference-between-a-stochastic-and-a-deterministic-policy). 
 
-&nbsp;&nbsp;&nbsp;&nbsp;To ensure our deterministic policy, which will output action based on state, is enough exploratory, we will add random function noise to action we got from policy. Even though the DDPG paper uses an Ornstein-Uhlenbeck process for generating noise, later papers proved that using Gaussian noise is just as effective and it will be used here to generate noise.
+&nbsp;&nbsp;&nbsp;&nbsp;To ensure our deterministic policy, which will output action based on state, is enough exploratory, we will add random function noise to action we got from policy. Even though the DDPG paper uses an [Ornstein-Uhlenbeck process](https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process) for generating noise, later papers proved that using [Gaussian noise](https://en.wikipedia.org/wiki/Gaussian_noise) is just as effective and it will be used here to generate noise.
 
 &nbsp;&nbsp;&nbsp;&nbsp; There are total of 4 neural networks in DDPG. DQN uses two NNs to create moving (NN which we update each step) and target (NN which is slowly following moving NN) neural network. Actor-Critic algoritms also have two NNs - Actor(policy NN which outputs actions from given state) and Critic(value function NN which gives estimated value of given state). Therefore DDPG, uses 4 NNs, moving and target for both Actor and Critic, where both target NNs follow moving NNs using [polyak averaging](https://en.wikipedia.org/wiki/Stochastic_approximation#Subsequent_developments_and_Polyak%E2%80%93Ruppert_averaging).
 
@@ -35,14 +35,13 @@
 *DDPG algorithm*
 
 ## Improving DDPG
-&nbsp;&nbsp;&nbsp;&nbsp; TODO:
 * To improve exploration, for first 10,000 steps we will take random actions [[Source]](https://spinningup.openai.com/en/latest/algorithms/ddpg.html#exploration-vs-exploitation)
-* Changing Epsilon (from Adam optimizer) to hyperparameter instead of default value of 1e-8
+* Changing [epsilon (from Adam optimizer)](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html#torch.optim.Adam) to hyperparameter instead of default value of 1e-8
 * Decaying learning rate to zero based on number of steps done
 * Decaying standard deviation (therefore random noise as well) to zero based on number of steps done [[Source]](https://github.com/openai/spinningup/blob/master/docs/algorithms/ddpg.rst#pseudocode)
 
 ## Testing
-&nbsp;&nbsp;&nbsp;&nbsp; To get accurate results, algorithm has additional class (test process) whose job is to occasionally test 100 episodes and calculate mean reward of last 100 episodes. By the rules, if test process gets 200 or higher mean score over last 100 games, goal is reached and we should terminate. If goal isn't reached, training process continues. Testing is done every 50,000 steps or when mean of last 40 returns is 200 or more.
+&nbsp;&nbsp;&nbsp;&nbsp; To get accurate results, algorithm has additional class (test process) whose job is to occasionally test 100 episodes and calculate mean reward of last 100 episodes. By the rules, if test process gets 200 or higher mean score over last 100 games, goal is reached and we should terminate. If goal isn't reached, training process continues. Testing is done every 50,000 steps or when mean of last 10 returns is 200 or more.
 
 ## Results
 &nbsp;&nbsp;&nbsp;&nbsp;One of the results can be seen on graph below, where X axis represents number of episodes in algorithm and Y axis represents episode reward, mean training return and mean test return (return = mean episode reward over last 100 episodes). Keep in mind that for goal to be reached mean test return has to reach 200.
