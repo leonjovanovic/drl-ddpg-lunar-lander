@@ -4,7 +4,7 @@ env_name = "LunarLanderContinuous-v2"
 
 seed = 0
 test_episodes = 100
-test_every = 100000
+test_every = 50000
 number_of_steps = 1000000
 buffer_size = 50000
 min_buffer_size = 1000
@@ -17,14 +17,15 @@ hidden_sizes = [256, 256]
 gamma = 0.99
 
 decay = True
-policy_lr = 0.001
-critic_lr = 0.002
+policy_lr = 0.0002
+critic_lr = 0.0003
 
-adam_eps = 1e-8
+adam_eps = 1e-7
 # Used to update target networks
 polyak = 0.995
+env_scale = True
 
-writer_flag = False
+writer_flag = True
 
 decayy = "decay" if decay else ""
 now = datetime.datetime.now()
