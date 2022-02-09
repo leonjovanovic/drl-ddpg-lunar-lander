@@ -25,7 +25,7 @@ adam_eps = 1e-7
 polyak = 0.995
 env_scale = True
 
-writer_flag = True
+writer_flag = False
 
 decayy = "decay" if decay else ""
 now = datetime.datetime.now()

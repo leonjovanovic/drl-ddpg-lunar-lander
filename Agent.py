@@ -33,7 +33,7 @@ class Agent:
         # Implement learning rate decay for both NNs and std decay for Random function
         self.agent_control.lr_std_decay(n_step)
         # Wait until buffer has enough of data
-        if self.buffer.buffer_counter < Config.min_buffer_size:
+        if self.buffer.buffer_counter < Config.min_buffer_size and not self.buffer.initialized:
             return
         # Get indices of randomly selected steps
         indices = self.buffer.sample_indices(Config.batch_size)
@@ -49,7 +49,7 @@ class Agent:
         self.policy_loss_mean.append(policy_loss)
 
     def record_results(self, n_step, writer, env):
-        if self.buffer.buffer_counter < Config.min_buffer_size or self.ep_count == env.episode_count:
+        if self.buffer.buffer_counter < Config.min_buffer_size and not self.buffer.initialized or self.ep_count == env.episode_count:
             return
         self.ep_count = env.episode_count
         self.max_reward = np.maximum(self.max_reward, np.max(env.return_queue))
