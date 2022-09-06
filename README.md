@@ -48,9 +48,9 @@
 
 ![Results graph](images/results.png)
 
-- ![#33bbee](https://via.placeholder.com/15/33bbee/000000?text=+) `Episode reward`
-- ![#359a3c](https://via.placeholder.com/15/359a3c/000000?text=+) `Mean training return`
-- ![#ee3377](https://via.placeholder.com/15/ee3377/000000?text=+) `Mean test return`
+- ![#33bbee](https://via.placeholder.com/15/33bbee/33bbee.png) `Episode reward`
+- ![#359a3c](https://via.placeholder.com/15/359a3c/359a3c.png) `Mean training return`
+- ![#ee3377](https://via.placeholder.com/15/ee3377/ee3377.png) `Mean test return`
 
 * During multiple runs, **mean test return is over 200**, therefore we can conclude that **goal is reached!**
 
